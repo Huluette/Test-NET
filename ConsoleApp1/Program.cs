@@ -27,9 +27,11 @@ namespace QuizApp
                 {
                     case "1":
                         StartQuiz();
+                        quizRunning = false;
                         break;
                     case "2":
                         ChooseCategory();
+                        quizRunning = false;
                         break;
                     case "3":
                         quizRunning = false;
@@ -126,6 +128,8 @@ namespace QuizApp
 
                 // Afficher le score à la fin du jeu
                 Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
+                
+                Console.WriteLine("Merci d'avoir joué au Quiz. À bientôt !");
 
             }
         }
