@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace QuizApp
 {
     class Program
     {
-        // Apparition interface intuitive avec 3 choix
+        // Interface utilisateur avec 3 choix
         static void Main()
         {
             bool quizRunning = true;
@@ -22,15 +21,15 @@ namespace QuizApp
 
                 string userInput = Console.ReadLine();
 
-                // Permet de faire un choix en inscrivant les valeurs de 1 à 3 sinon rien ne se passe
+                // Effectuer un choix (valeurs 1 à 3) sinon rien ne se passe
                 switch (userInput)
                 {
                     case "1":
-                        StartQuiz();
+                        StartQuiz(); // Démarrer le quiz général
                         quizRunning = false;
                         break;
                     case "2":
-                        ChooseCategory();
+                        ChooseCategory(); // Choisir une catégorie spécifique
                         quizRunning = false;
                         break;
                     case "3":
@@ -43,168 +42,236 @@ namespace QuizApp
                 }
             }
         }
-        static void StartQuiz()
+
+        static void StartQuiz(List<string> selectedQuestions = null)
         {
-
-            // Lire le contenant du fichier CSV 
+            // Charger les questions du fichier CSV
             string wayCsv = @"C:\Users\Utilisateur\source\repos\Test-NET\ConsoleApp1\QuestionsExample.csv";
-            string[] rowCsv = System.IO.File.ReadAllLines(wayCsv);
+            string[] rowCsv = File.ReadAllLines(wayCsv);
 
-            // Créer des variables qui correspondent aux listes du fichier csv 
-            var questions = new List<string>(); // Créer la liste des questions
-            int questionsNumber = 1; // Initialiser le numéro de la question à 1
-            var answers = new List<string>(); // Créer la liste des réponses
-            var correctAnswers = new List<int>(); // Créer la liste des bonnes réponses
+            var questions = new List<string>(); // Liste des questions
+            var answers = new List<string>(); // Liste des réponses
+            var correctAnswers = new List<int>(); // Liste des bonnes réponses
             int score = 0; // Initialiser le score à zéro
 
-            // Accueillir l'utilisateur et lui laisser 3 choix entre Démarrer le quizz, Choisir la catégorie et quitter 
-
-            // Fait appel à la colonne 0 pour appeler les questions dans les lignes
+            // Remplir les listes à partir du fichier CSV
             for (int questionsAnswers = 0; questionsAnswers < rowCsv.Length; questionsAnswers++)
             {
                 string[] columnData = rowCsv[questionsAnswers].Split(';');
-
                 questions.Add(columnData[0]);
                 answers.Add(columnData[1]);
-
-                // Convertir la dernière colonne en int pour avoir la réponse correcte
                 correctAnswers.Add(int.Parse(columnData[2]));
             }
 
             Console.WriteLine("Attention, c'est parti !");
-            Thread.Sleep(3000); // Patiente 3 secondes
+            Thread.Sleep(3000);
             Console.WriteLine("Question pour un champion :");
 
-            // Affiche les questions du csv
+            // Afficher les questions du CSV
             for (int questionsAnswers = 0; questionsAnswers < questions.Count; questionsAnswers++)
             {
-                Console.WriteLine($"{questionsNumber}) " + questions[questionsAnswers]);
-                questionsNumber++;
-
-                string[] possibleAnswers = answers[questionsAnswers].Split('/'); // Séparer les réponses
-                int answerNumber = 1; // Initialiser le numéro de réponse à 1
-                foreach (string answer in possibleAnswers)
+                Console.WriteLine($"{questionsAnswers + 1}) {questions[questionsAnswers]}");
+                string[] possibleAnswers = answers[questionsAnswers].Split('/');
+                for (int i = 0; i < possibleAnswers.Length; i++)
                 {
-                    Console.WriteLine($"{answerNumber}. {answer}"); // Afficher le numéro de réponse suivi de la réponse
-                    answerNumber++; // Incrémenter le numéro de réponse pour la prochaine réponse
+                    Console.WriteLine($"{i + 1}. {possibleAnswers[i]}");
                 }
 
-                // Ecrire la réponse
+                // Demander la réponse
                 Console.WriteLine("Ecrivez votre réponse :");
 
-                // Saisie de l'utilisateur
+                // Attendre une réponse valide
                 bool validInput = false;
                 while (!validInput)
                 {
                     string userInput = Console.ReadLine();
 
-                    if (!int.TryParse(userInput, out int userAnswer))
+                    if (!int.TryParse(userInput, out int userAnswer) || userAnswer < 1 || userAnswer > 4)
                     {
                         Console.WriteLine("Veuillez entrer un nombre entre 1 et 4 correspondant à la réponse.");
                     }
-                    else if (userAnswer >= 1 && userAnswer <= 4)
+                    else
                     {
-                        // Validation de la réponse de l'utilisateur
+                        // Valider la réponse de l'utilisateur
                         if (userAnswer == correctAnswers[questionsAnswers])
                         {
                             Console.WriteLine("Bonne réponse !");
-                            score++; // Incrémenter le score si la réponse est correcte
+                            score++;
                         }
                         else
                         {
                             Console.WriteLine("Ce n'est pas la bonne réponse.");
                         }
 
-                        // Affichage de la réponse correcte après avoir parcouru toutes les propositions
                         Console.WriteLine($"La réponse correcte est : {correctAnswers[questionsAnswers]}");
-
-                        validInput = true; // Sortie de la boucle après traitement de la réponse
-                    }
-                    else
-                    {
-                        Console.WriteLine("Veuillez entrer un nombre entre 1 et 4 correspondant à la réponse.");
+                        validInput = true;
                     }
                 }
-
-                // Afficher le score à la fin du jeu
-                Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
-
-                Console.WriteLine("Merci d'avoir joué au Quiz. À bientôt !");
-
             }
+
+            Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
+            Console.WriteLine("Merci d'avoir joué au Quiz. À bientôt !");
         }
 
         static void ChooseCategory()
         {
-            Console.WriteLine("Choisissez votre catégorie : ");
+            ChooseCategory categoryChooser = new ChooseCategory(@"C:\Users\Utilisateur\source\repos\Test-NET\ConsoleApp1\QuestionsExample.csv");
+            categoryChooser.DisplayCategories();
+
+            bool validInput = false;
+            while (!validInput)
+            {
+                Console.WriteLine("Choisissez une catégorie :");
+                string chosenCategory = Console.ReadLine();
+                string selectedCategory = null;
+
+                switch (chosenCategory)
+                {
+                    case "1":
+                        selectedCategory = "Catégorie 1";
+                        break;
+                    case "2":
+                        selectedCategory = "Catégorie 2";
+                        break;
+                    case "3":
+                        selectedCategory = "Quelle commande permet de vérifier la version installée du sdk de .net ?";
+                        break;
+                    default:
+                        Console.WriteLine("Veuillez entrer un nombre entre 1 et 3.");
+                        break;
+                }
+
+                List<string> selectedQuestions = categoryChooser.GetQuestionsByCategory(selectedCategory);
+
+                if (selectedQuestions.Count > 0)
+                {
+                    Console.WriteLine($"Catégorie sélectionnée : {selectedCategory}");
+                    StartQuiz(selectedQuestions); // Démarrer le quiz avec la catégorie sélectionnée
+                    validInput = true;
+                }
+                else
+                {
+                    Console.WriteLine("Cette catégorie n'a pas de questions associées.");
+                }
+            }
+        }
+    }
+
+    public class ChooseCategory
+    {
+        private Dictionary<string, List<string>> questionsByCategory;
+
+        public ChooseCategory(string filePath)
+        {
+            questionsByCategory = new Dictionary<string, List<string>>();
+            LoadQuestions(filePath);
         }
 
+        private void LoadQuestions(string filePath)
+        {
+            string[] rows = File.ReadAllLines(filePath);
 
+            foreach (string row in rows)
+            {
+                string[] columns = row.Split(';');
+                string question = columns[0];
+                string answer = columns[1];
+                string category = columns[2];
+
+                if (!questionsByCategory.ContainsKey(category))
+                {
+                    questionsByCategory[category] = new List<string>();
+                }
+
+                questionsByCategory[category].Add($"{question} - Réponse : {answer}");
+            }
+        }
+
+        public void DisplayCategories()
+        {
+            Console.WriteLine("Catégories disponibles : ");
+            foreach (string category in questionsByCategory.Keys)
+            {
+                Console.WriteLine(category);
+            }
+        }
+
+        public List<string> GetQuestionsByCategory(string category)
+        {
+            if (questionsByCategory.ContainsKey(category))
+            {
+                return questionsByCategory[category];
+            }
+            else
+            {
+                return new List<string>();
+            }
+        }
     }
 }
 
 
 
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                ///// Ecriture en 'brut' 
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// Ecriture en 'brut' 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                //// Création des questions
-                //string[] questions =
-                //{
-                //    "Quel est l'animal le plus rapide au monde ?",
-                //    "Qui bas le record du monde de jeu de fléchettes ?",
-                //    "En quelle année est décédée Elizabeth II ?"
-                //};
+//// Création des questions
+//string[] questions =
+//{
+//    "Quel est l'animal le plus rapide au monde ?",
+//    "Qui bas le record du monde de jeu de fléchettes ?",
+//    "En quelle année est décédée Elizabeth II ?"
+//};
 
-                //// Création des réponses
-                //string[] answers =
-                //{
-                //    "A. HamsterZila \nB. BrebisPhaon \nC. SanglierBinouz",
-                //    "A. Jean-Jacques Coldman \nB. Mylène Fermière \nC. Renault la voiture \nD. Dieu pas donné",
-                //    "A. 2022 \nB. 2023 \nC. 2024"
-                //};
+//// Création des réponses
+//string[] answers =
+//{
+//    "A. HamsterZila \nB. BrebisPhaon \nC. SanglierBinouz",
+//    "A. Jean-Jacques Coldman \nB. Mylène Fermière \nC. Renault la voiture \nD. Dieu pas donné",
+//    "A. 2022 \nB. 2023 \nC. 2024"
+//};
 
-                //// Equivault aux bonnes réponses 
-                //int[] correctAnswers =
-                //{
-                //    1, 3, 0 
-                //};
+//// Equivault aux bonnes réponses 
+//int[] correctAnswers =
+//{
+//    1, 3, 0 
+//};
 
-                //// Valeur du score du joueur par défaut
-                //int playerScore = 0;
+//// Valeur du score du joueur par défaut
+//int playerScore = 0;
 
 
-                //Console.WriteLine("Bienvenue dans la meilleure application de Quizz claquée au sol ! :)");
+//Console.WriteLine("Bienvenue dans la meilleure application de Quizz claquée au sol ! :)");
 
-                //// Boucle permettant de modifier le score du joueur
-                //for (int iplayerScore= 0;  iplayerScore<questions.Length; iplayerScore++)
-                //{
-                //    Console.WriteLine("Questions " + (iplayerScore + 1));
-                //    Console.WriteLine(questions[iplayerScore]);
-                //    Console.WriteLine(answers[iplayerScore]);
-                //    Console.WriteLine("S'il vous plait, entrez votre réponse ('A', 'B', 'C' ou 'D'): ");
-                //    string playerAnswer = Console.ReadLine();
+//// Boucle permettant de modifier le score du joueur
+//for (int iplayerScore= 0;  iplayerScore<questions.Length; iplayerScore++)
+//{
+//    Console.WriteLine("Questions " + (iplayerScore + 1));
+//    Console.WriteLine(questions[iplayerScore]);
+//    Console.WriteLine(answers[iplayerScore]);
+//    Console.WriteLine("S'il vous plait, entrez votre réponse ('A', 'B', 'C' ou 'D'): ");
+//    string playerAnswer = Console.ReadLine();
 
-                //    // Valider les réponses
-                //    if(string.Equals(playerAnswer, "A", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 0)
-                //    {
-                //        playerScore++;
-                //    }
-                //    else if(string.Equals(playerAnswer, "B", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 1)
-                //    {
-                //        playerScore++;
-                //    }
-                //    else if(string.Equals(playerAnswer, "C", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 2)
-                //    {
-                //        playerScore++;
-                //    }
-                //    else if(string.Equals(playerAnswer, "D", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 3)
-                //    {
-                //        playerScore++;
-                //    }
-                //}
+//    // Valider les réponses
+//    if(string.Equals(playerAnswer, "A", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 0)
+//    {
+//        playerScore++;
+//    }
+//    else if(string.Equals(playerAnswer, "B", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 1)
+//    {
+//        playerScore++;
+//    }
+//    else if(string.Equals(playerAnswer, "C", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 2)
+//    {
+//        playerScore++;
+//    }
+//    else if(string.Equals(playerAnswer, "D", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 3)
+//    {
+//        playerScore++;
+//    }
+//}
 
-                //// Afficher le score de l'utilisateur
-                //Console.WriteLine("Le Quizz est terminé !");
-                //Console.WriteLine("Bravo ! Ton score est de : " + playerScore + "/" + questions.Length);
+//// Afficher le score de l'utilisateur
+//Console.WriteLine("Le Quizz est terminé !");
+//Console.WriteLine("Bravo ! Ton score est de : " + playerScore + "/" + questions.Length);
