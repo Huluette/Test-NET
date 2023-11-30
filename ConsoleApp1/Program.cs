@@ -14,7 +14,7 @@ namespace QuizApp
             // Lire le contenant du fichier CSV 
             string wayCsv = @"C:\Users\Utilisateur\source\repos\Test-NET\ConsoleApp1\QuestionsExample.csv";
             string[] rowCsv = System.IO.File.ReadAllLines(wayCsv);
-     
+
             // Créer des variables qui correspondent aux listes du fichier csv 
             var questions = new List<string>(); // Créer la liste des questions
             int questionsNumber = 1; // Initialiser le numéro de la question à 1
@@ -34,7 +34,7 @@ namespace QuizApp
                 correctAnswers.Add(int.Parse(columnData[2]));
             }
 
-            // 
+            // Affiche les questions du csv
             Console.WriteLine("Question pour un champion :");
 
             for (int questionsAnswers = 0; questionsAnswers < questions.Count; questionsAnswers++)
@@ -49,80 +49,111 @@ namespace QuizApp
                     Console.WriteLine($"{answerNumber}. {answer}"); // Afficher le numéro de réponse suivi de la réponse
                     answerNumber++; // Incrémenter le numéro de réponse pour la prochaine réponse
                 }
-                
+
                 // Ecrire la réponse
                 Console.WriteLine("Ecrivez votre réponse :");
-                Console.ReadLine();
 
-                // Afficher la réponse correcte après avoir parcouru toutes les propositions
-                Console.WriteLine($"La réponse correcte est : {correctAnswers[questionsAnswers]}");
+                // Saisie de l'utilisateur
+                bool validInput = false;
+                while (!validInput)
+                {
+
+                    string userInput = Console.ReadLine();
+
+                    if (!int.TryParse(userInput, out int userAnswer) && userAnswer >= 1 && userAnswer <= 4)
+                    {
+                        validInput = true;
+
+                        // Vérifier si la réponse de l'utilisateur est correcte
+                        if (userAnswer == correctAnswers[questionsAnswers])
+                        {
+                            Console.WriteLine("Bonne réponse !");
+                            score++; // Incrémenter le score si la réponse est correcte
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ce n'est pas la bonne réponse.");
+                        }
+
+                        // Afficher la réponse correcte après avoir parcouru toutes les propositions
+                        Console.WriteLine($"La réponse correcte est : {correctAnswers[questionsAnswers]}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Veuillez entrer un numéro valide correspondant à la réponse.");
+                    }
+
+                }
+
+                // Afficher le score à la fin du jeu
+                Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
+
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ///// Ecriture en 'brut' 
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                //// Création des questions
+                //string[] questions =
+                //{
+                //    "Quel est l'animal le plus rapide au monde ?",
+                //    "Qui bas le record du monde de jeu de fléchettes ?",
+                //    "En quelle année est décédée Elizabeth II ?"
+                //};
+
+                //// Création des réponses
+                //string[] answers =
+                //{
+                //    "A. HamsterZila \nB. BrebisPhaon \nC. SanglierBinouz",
+                //    "A. Jean-Jacques Coldman \nB. Mylène Fermière \nC. Renault la voiture \nD. Dieu pas donné",
+                //    "A. 2022 \nB. 2023 \nC. 2024"
+                //};
+
+                //// Equivault aux bonnes réponses 
+                //int[] correctAnswers =
+                //{
+                //    1, 3, 0 
+                //};
+
+                //// Valeur du score du joueur par défaut
+                //int playerScore = 0;
+
+
+                //Console.WriteLine("Bienvenue dans la meilleure application de Quizz claquée au sol ! :)");
+
+                //// Boucle permettant de modifier le score du joueur
+                //for (int iplayerScore= 0;  iplayerScore<questions.Length; iplayerScore++)
+                //{
+                //    Console.WriteLine("Questions " + (iplayerScore + 1));
+                //    Console.WriteLine(questions[iplayerScore]);
+                //    Console.WriteLine(answers[iplayerScore]);
+                //    Console.WriteLine("S'il vous plait, entrez votre réponse ('A', 'B', 'C' ou 'D'): ");
+                //    string playerAnswer = Console.ReadLine();
+
+                //    // Valider les réponses
+                //    if(string.Equals(playerAnswer, "A", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 0)
+                //    {
+                //        playerScore++;
+                //    }
+                //    else if(string.Equals(playerAnswer, "B", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 1)
+                //    {
+                //        playerScore++;
+                //    }
+                //    else if(string.Equals(playerAnswer, "C", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 2)
+                //    {
+                //        playerScore++;
+                //    }
+                //    else if(string.Equals(playerAnswer, "D", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 3)
+                //    {
+                //        playerScore++;
+                //    }
+                //}
+
+                //// Afficher le score de l'utilisateur
+                //Console.WriteLine("Le Quizz est terminé !");
+                //Console.WriteLine("Bravo ! Ton score est de : " + playerScore + "/" + questions.Length);
+
             }
-
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ///// Ecriture en 'brut' 
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //// Création des questions
-            //string[] questions =
-            //{
-            //    "Quel est l'animal le plus rapide au monde ?",
-            //    "Qui bas le record du monde de jeu de fléchettes ?",
-            //    "En quelle année est décédée Elizabeth II ?"
-            //};
-
-            //// Création des réponses
-            //string[] answers =
-            //{
-            //    "A. HamsterZila \nB. BrebisPhaon \nC. SanglierBinouz",
-            //    "A. Jean-Jacques Coldman \nB. Mylène Fermière \nC. Renault la voiture \nD. Dieu pas donné",
-            //    "A. 2022 \nB. 2023 \nC. 2024"
-            //};
-
-            //// Equivault aux bonnes réponses 
-            //int[] correctAnswers =
-            //{
-            //    1, 3, 0 
-            //};
-
-            //// Valeur du score du joueur par défaut
-            //int playerScore = 0;
-
-
-            //Console.WriteLine("Bienvenue dans la meilleure application de Quizz claquée au sol ! :)");
-
-            //// Boucle permettant de modifier le score du joueur
-            //for (int iplayerScore= 0;  iplayerScore<questions.Length; iplayerScore++)
-            //{
-            //    Console.WriteLine("Questions " + (iplayerScore + 1));
-            //    Console.WriteLine(questions[iplayerScore]);
-            //    Console.WriteLine(answers[iplayerScore]);
-            //    Console.WriteLine("S'il vous plait, entrez votre réponse ('A', 'B', 'C' ou 'D'): ");
-            //    string playerAnswer = Console.ReadLine();
-
-            //    // Valider les réponses
-            //    if(string.Equals(playerAnswer, "A", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 0)
-            //    {
-            //        playerScore++;
-            //    }
-            //    else if(string.Equals(playerAnswer, "B", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 1)
-            //    {
-            //        playerScore++;
-            //    }
-            //    else if(string.Equals(playerAnswer, "C", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 2)
-            //    {
-            //        playerScore++;
-            //    }
-            //    else if(string.Equals(playerAnswer, "D", StringComparison.OrdinalIgnoreCase) && correctAnswers[iplayerScore] == 3)
-            //    {
-            //        playerScore++;
-            //    }
-            //}
-
-            //// Afficher le score de l'utilisateur
-            //Console.WriteLine("Le Quizz est terminé !");
-            //Console.WriteLine("Bravo ! Ton score est de : " + playerScore + "/" + questions.Length);
-
         }
     }
 }
