@@ -128,7 +128,7 @@ namespace QuizApp
 
                 // Afficher le score à la fin du jeu
                 Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
-                
+
                 Console.WriteLine("Merci d'avoir joué au Quiz. À bientôt !");
 
             }
@@ -136,12 +136,14 @@ namespace QuizApp
 
         static void ChooseCategory()
         {
-            Console.WriteLine("Je fonctionne aussi, mais je ne possède rien pour le moment.");
+            Console.WriteLine("Choisissez votre catégorie : ");
         }
+
+
     }
-
-
 }
+
+
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ///// Ecriture en 'brut' 
