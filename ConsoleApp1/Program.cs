@@ -8,7 +8,40 @@ namespace QuizApp
 {
     class Program
     {
+        // Apparition interface intuitive avec 3 choix
         static void Main()
+        {
+            bool quizRunning = true;
+            while (quizRunning)
+            {
+                Console.WriteLine("Bienvenue au Quiz !");
+                Console.WriteLine("Que voulez-vous faire ?");
+                Console.WriteLine("1. Démarrer le quiz");
+                Console.WriteLine("2. Choisir une catégorie");
+                Console.WriteLine("3. Quitter");
+
+                string userInput = Console.ReadLine();
+
+                // Permet de faire un choix en inscrivant les valeurs de 1 à 3 sinon rien ne se passe
+                switch (userInput)
+                {
+                    case "1":
+                        StartQuiz();
+                        break;
+                    case "2":
+                        ChooseCategory();
+                        break;
+                    case "3":
+                        quizRunning = false;
+                        Console.WriteLine("Merci d'avoir joué au Quiz. À bientôt !");
+                        break;
+                    default:
+                        Console.WriteLine("Veuillez entrer un choix valide.");
+                        break;
+                }
+            }
+        }
+        static void StartQuiz()
         {
 
             // Lire le contenant du fichier CSV 
@@ -22,6 +55,8 @@ namespace QuizApp
             var correctAnswers = new List<int>(); // Créer la liste des bonnes réponses
             int score = 0; // Initialiser le score à zéro
 
+            // Accueillir l'utilisateur et lui laisser 3 choix entre Démarrer le quizz, Choisir la catégorie et quitter 
+
             // Fait appel à la colonne 0 pour appeler les questions dans les lignes
             for (int questionsAnswers = 0; questionsAnswers < rowCsv.Length; questionsAnswers++)
             {
@@ -34,9 +69,11 @@ namespace QuizApp
                 correctAnswers.Add(int.Parse(columnData[2]));
             }
 
-            // Affiche les questions du csv
+            Console.WriteLine("Attention, c'est parti !");
+            Thread.Sleep(3000); // Patiente 3 secondes
             Console.WriteLine("Question pour un champion :");
 
+            // Affiche les questions du csv
             for (int questionsAnswers = 0; questionsAnswers < questions.Count; questionsAnswers++)
             {
                 Console.WriteLine($"{questionsNumber}) " + questions[questionsAnswers]);
@@ -90,11 +127,16 @@ namespace QuizApp
                 // Afficher le score à la fin du jeu
                 Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
 
-
-
             }
         }
+
+        static void ChooseCategory()
+        {
+            Console.WriteLine("Je fonctionne aussi, mais je ne possède rien pour le moment.");
+        }
     }
+
+
 }
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
