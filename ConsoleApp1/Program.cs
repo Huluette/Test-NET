@@ -57,14 +57,15 @@ namespace QuizApp
                 bool validInput = false;
                 while (!validInput)
                 {
-
                     string userInput = Console.ReadLine();
 
-                    if (!int.TryParse(userInput, out int userAnswer) && userAnswer >= 1 && userAnswer <= 4)
+                    if (!int.TryParse(userInput, out int userAnswer))
                     {
-                        validInput = true;
-
-                        // Vérifier si la réponse de l'utilisateur est correcte
+                        Console.WriteLine("Veuillez entrer un nombre entre 1 et 4 correspondant à la réponse.");
+                    }
+                    else if (userAnswer >= 1 && userAnswer <= 4)
+                    {
+                        // Validation de la réponse de l'utilisateur
                         if (userAnswer == correctAnswers[questionsAnswers])
                         {
                             Console.WriteLine("Bonne réponse !");
@@ -75,19 +76,26 @@ namespace QuizApp
                             Console.WriteLine("Ce n'est pas la bonne réponse.");
                         }
 
-                        // Afficher la réponse correcte après avoir parcouru toutes les propositions
+                        // Affichage de la réponse correcte après avoir parcouru toutes les propositions
                         Console.WriteLine($"La réponse correcte est : {correctAnswers[questionsAnswers]}");
+
+                        validInput = true; // Sortie de la boucle après traitement de la réponse
                     }
                     else
                     {
-                        Console.WriteLine("Veuillez entrer un numéro valide correspondant à la réponse.");
+                        Console.WriteLine("Veuillez entrer un nombre entre 1 et 4 correspondant à la réponse.");
                     }
-
                 }
 
                 // Afficher le score à la fin du jeu
                 Console.WriteLine($"Votre score final est : {score}/{questions.Count}");
 
+
+
+            }
+        }
+    }
+}
 
                 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 ///// Ecriture en 'brut' 
@@ -152,8 +160,3 @@ namespace QuizApp
                 //// Afficher le score de l'utilisateur
                 //Console.WriteLine("Le Quizz est terminé !");
                 //Console.WriteLine("Bravo ! Ton score est de : " + playerScore + "/" + questions.Length);
-
-            }
-        }
-    }
-}
