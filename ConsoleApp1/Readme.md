@@ -1,8 +1,11 @@
 # Projet QuizzConsole
 
+## > Installer les outils nécessaires 
+
 ## > Récupérer le projet
 
-Bienvenue, pour récupérer le projet il suffit de... (explications à venir)
+Bienvenue, pour récupérer le projet il suffit d'utiliser le célèbre git clone :
+> git clone https://github.com/simplon-lille-csharp-dotnet/quiz_LB.git
 
 ## > Lancer le projet
 
