@@ -1,4 +1,15 @@
-﻿Qui est Margaret Hamilton ?;une championne de ping pong/une pilote de F1/une informaticienne de légende;3;1
-Qui peut accéder à un attribut protected d'une classe en C# ?;ses classes dérivées/sa mère/son père/toutes les classes du même domaine;1;2
-Que permet le raccourci F9 sous Visual Studio Code ?;Mettre un signet/Mettre un point d'arrêt/Naviguer vers la définition;2;3
-Quelle commande permet de vérifier la version installée du sdk de .net ?;dotnet -v/dotnet --list-sdks/dotnet version;2;2
+﻿Qui a peint "La Nuit Étoilée" ?;Pablo Picasso/Leonardo da Vinci/Vincent van Gogh/Claude Monet;3;Art
+Quel courant artistique est associé à Claude Monet ?;Impressionnisme/Cubisme/Surréalisme/Renaissance;1;Art
+Qui a sculpté "Le Penseur" ?;Pablo Picasso/Michel-Ange/Auguste Rodin;3;Art
+Quel artiste est connu pour ses "Dripping Paintings" ?;Jackson Pollock/Salvador Dalí/Andy Warhol/Georgia O'Keeffe;1;Art
+Quelle est la technique de sculpture consistant à enlever de la matière pour créer une forme ?;La moulage/La taille directe/La ciselure/La gravure;2;Art
+Quel langage de programmation est souvent utilisé pour le développement de jeux vidéo ?;C#/Java/Python/C++;4;Geek
+Qui est souvent considéré comme le "père" du langage C ?;Linus Torvalds/Richard Stallman/Dennis Ritchie/Guido van Rossum;3;Geek
+Quelle est la signification de l'acronyme HTML ?;HyperTransfer Markup Language/HyperText Markup Language/HyperText Manipulation Language;2;Geek
+Quelle méthode de tri utilise l'algorithme "Quicksort" ?;Tri par échange/Tri par sélection/Tri par fusion/Tri rapide;4;Geek
+Quel est le créateur de l'entreprise SpaceX ?;Elon Musk/Mark Zuckerberg/Bill Gates/Jeff Bezos;1;Geek
+Qui est le personnage principal de la série de jeux "Uncharted" ?;Nathan Drake/Master Chief/Solid Snake/Kratos;1;Video gaming
+Quelle franchise de jeux est connue pour ses courses de karting mettant en scène des personnages célèbres ?;Mario Kart/Sonic Racing/Crash Team Racing;1;Video gaming
+Quel est le nom du monde imaginaire dans lequel se déroule la série de jeux "The Elder Scrolls" ?;Tamriel/Azeroth/Aldmeris/Hyrule;3;Video gaming
+Quel jeu a popularisé le genre "Battle Royale" ?;PlayerUnknown's Battlegrounds (PUBG)/Fortnite/Apex Legends/Call of Duty: Warzone;2;Video gaming
+Quel est le dernier opus de la série de jeux "God of War" sorti en 2018 ?;God of War/God of War: Ascension/God of War: Ghost of Sparta/God of War: Ragnarok;4;Video gaming
