@@ -79,11 +79,12 @@ Et pour finir, suivez les instructions sécifiques au projet, c'est-à-dire que si
 
 ## > Comprendre le projet
 
-Pour comprendre le projet il suffit de suivre les étapes du jeu de Quizz.
+Pour comprendre le projet il suffit de suivre les étapes du jeu de Quiz.
+Pour bien débuter, on va tout d'abord commencer en découpant le projet par étape. 
 
-Pour bien débuter, on va tout d'abord commencer avec une seule catégorie au début. Chaque titre et sous titre de ce readme.md doit être transfomé en méthode. 
+Attention : Chaque titre et sous titre de ce readme.md doit être transfomé en méthode. 
 
-## > Ecrire les questions en 'dur' dans le code 
+### > Ecrire les questions en 'dur' dans le code 
 
 3 questions récupérées en 'dur' dans un premier temps :
 
@@ -92,15 +93,49 @@ Pour bien débuter, on va tout d'abord commencer avec une seule catégorie au débu
 - ```var ReponseDeux = "!j'ai connu des jours meilleurs..."```
 - ```var ReponseTrois = "Je suis grave dans la m*** !"```
 
-## Depuis un fichier dans un second temps
+### Depuis un fichier dans un second temps
 	
-On peut utiliser le fichier.... et l'importer de ka manière suivante : 
+On peut utiliser le fichier csv et l'importer de la manière suivante : 
 
-```Blabla code, blabla code```
+```Charger les questions du fichier CSV```
+```string filePath = @"C:\Users\Utilisateur\source\repos\Test-NET\ConsoleApp1\QuestionsExample.csv";```
+```string[] nomFilePath = File.ReadAllLines(filePath);```
+
+ou 
+
+```string filePath = "chemin/vers/ton/fichier.csv";```
 
 ### Récupérer la première ligne du fichier CSV
 
-Il faut utiliser la méthoe ... pour pouvoir récupérer "Séparer les champs"...
+Il faut utiliser la méthode StreamReader pour pouvoir récupérer la première ligne du fichier CSV : 
+
+```// Vérifie si le fichier existe
+        if (File.Exists(filePath))
+	    {
+            try
+            {
+                // Utilisation de StreamReader pour lire le fichier
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    // Lecture de la première ligne du fichier
+                    string firstLine = sr.ReadLine();
+
+                    // Affichage ou utilisation de la première ligne
+                    Console.WriteLine("Première ligne du fichier CSV :");
+                    Console.WriteLine(firstLine);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Une erreur est survenue : " + e.Message);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Le fichier n'existe pas.");
+        }
+    } 
+```
 
 ### Récupérer la liste des questions
 
@@ -113,7 +148,29 @@ Quelle est la structure de ma liste de questions ?
 Si on fait un tableau de string pour lister les intitulés, comment lier chaque question à ses réponses ?
 Il est temps de construire des classes : une classe Question qui contient une liste de réponse.
 
+``` public class Question {
+
+		var questions = new List<string>(); // Liste des questions
+		var answers = new List<string>(); // Liste des réponses
+
+		// Remplir les listes à partir du fichier CSV
+		 for (int questionsAnswers = 0; questionsAnswers < nomFilePath.Length; questionsAnswers++)
+		{
+		string[] columnData = nomFilePath[questionsAnswers].Split(';'); // La méthode Split permet de découper les colonnes du tableau csv avec le ;
+		questions.Add(columnData[0]); // On revoit les colonnes du tableau csv en fonction de leur valeur attribuer ex: 0 ou 1
+		answers.Add(columnData[1]);
+		}
+	}
+```
+
 ## Accueillir le joueur 
+
+Pour accueillir un joueur, on va créer une autre classe qui sera appelé dans le main !
+
+``` public class homeUser {
+		
+}
+```
 
 ## Demander la catégorie (dans un second temps) et filtrer la liste des questions 
 
